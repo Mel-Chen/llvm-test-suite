@@ -376,5 +376,33 @@ int main(void) {
 	ScalarFn, VectorFn, "findlast_icmp_s16_start_4_iv_start_3");
   }
 
+  {
+    // Find the last 32-bits index with the undefined start value.
+    DEFINE_SCALAR_AND_VECTOR_FN2_TYPE(
+	int32_t Rdx;,
+	DEFINE_FINDLAST_LOOP_BODY(
+	    /* TrueVal= */ I, /* FalseVal= */ Rdx,
+	    /* ForCond= */
+	    INC_COND(/* Start= */ 0, /* Step= */ 1, /* RetTy= */ int32_t)),
+	int32_t);
+    checkVectorFunction<int32_t, int32_t>(ScalarFn, VectorFn,
+					  "findlast_icmp_s32_true_start_undef");
+    checkVectorFunction<int32_t, float>(ScalarFn, VectorFn,
+					"findlast_fcmp_s32_true_start_undef");
+  }
+
+  {
+    // Find the last 16-bits index with the undefined start value.
+    DEFINE_SCALAR_AND_VECTOR_FN2_TYPE(
+	int16_t Rdx;,
+	DEFINE_FINDLAST_LOOP_BODY(
+	    /* TrueVal= */ I, /* FalseVal= */ Rdx,
+	    /* ForCond= */
+	    INC_COND(/* Start= */ 0, /* Step= */ 1, /* RetTy= */ int16_t)),
+	int16_t);
+    checkVectorFunction<int16_t, int16_t>(ScalarFn, VectorFn,
+					  "findlast_icmp_s16_true_start_undef");
+  }
+
   return 0;
 }
